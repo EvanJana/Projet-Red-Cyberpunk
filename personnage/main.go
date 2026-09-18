@@ -94,7 +94,6 @@ func menu(c character) {
 		fmt.Println("Choix invalide.")
 	}
 }
-
 func main() {
 	c := initCharacter()
 	displayInfo(c)
