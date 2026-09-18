@@ -29,7 +29,7 @@ func initCharacter() character {
 		pvMax = 75
 		saisieclass = "Assassin"
 		inventaire["stimulant"] = 3
-	case "1","Netrunner", "netrunner":
+	case "1", "Netrunner", "netrunner":
 		pvMax = 100
 		saisieclass = "Netrunner"
 		inventaire["stimulant"] = 2
@@ -64,18 +64,25 @@ func displayInfo(c character) {
 	fmt.Println("==================================")
 }
 
-func accessInventory(inventaire map[string]int) {
-	if len(inventaire) == 0 {
+func accessInventory(c *character) {
+	if len(c.inventaire) == 0 {
 		fmt.Println("Inventaire vide.")
 		return
 	}
 
-	for objet, quantite := range inventaire {
+	for objet, quantite := range c.inventaire {
 		fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
     }
+	fmt.Println("1. Mes objets")
+	fmt.printLn("2. Vendeur")
+	fmt.scan(&objet)
+	switch	objet{
+	case potion
+		takePot()
+	}
 }
 
-func menu(c character) {
+func menu(c *character) {
 	fmt.Println("1. Afficher les informations du personnage")
 	fmt.Println("2. Accéder au contenu de l’inventaire")
 	fmt.Println("3. Quitter")
@@ -85,9 +92,9 @@ func menu(c character) {
 
 	switch choixMenu {
 	case "1":
-		displayInfo(c)
+		displayInfo(*c)
 	case "2":
-		accessInventory(c.inventaire)
+		accessInventory(c)
 	case "3":
 		fmt.Println("Au revoir !")
 	default:
@@ -95,9 +102,25 @@ func menu(c character) {
 	}
 }
 
+func takePot(c *character) {
+	quantite, disponible := c.inventaire["stimulant"]
+	if !disponible || quantite <= 0 {
+		fmt.Println("Vous n'avez plus de stimulant.")
+		return
+	}
+
+	c.inventaire["stimulant"] = quantite - 1
+	c.pvAct += 50
+	if c.pvAct > c.pvMax {
+		c.pvAct = c.pvMax
+	}
+
+	fmt.Printf("Stimulant utilisé. Points de vie : %d / %d\n", c.pvAct, c.pvMax)
+}
+
 func main() {
 	c := initCharacter()
 	displayInfo(c)
-	menu(c)
+	menu(&c)
 	
 }
