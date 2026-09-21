@@ -17,22 +17,21 @@ func characterCreation() character {
 		}
 		fmt.Println("Le nom doit contenir uniquement des lettres.")
 	}
-
 	var class string
 	for {
 		fmt.Println("Choisissez votre classe :")
-		fmt.Println("1. Humain (100 PV max)")
-		fmt.Println("2. Elfe (80 PV max)")
-		fmt.Println("3. Nain (120 PV max)")
+		fmt.Println("1. Netrunner (100 PV max)")
+		fmt.Println("2. Assassin (75 PV max)")
+		fmt.Println("3. Berserk (125 PV max)")
 		fmt.Scan(&class)
 
 		switch strings.ToLower(class) {
-		case "1", "humain":
-			class = "Humain"
-		case "2", "elfe":
-			class = "Elfe"
-		case "3", "nain":
-			class = "Nain"
+		case "1", "Netrunner":
+			class = "Netrunner"
+		case "2", "assassin":
+			class = "Assassin"
+		case "3", "Berserk":
+			class = "Berserk"
 		default:
 			fmt.Println("Classe invalide.")
 			continue
@@ -44,16 +43,17 @@ func characterCreation() character {
 }
 
 func initCharacter(name, class string) character {
+	skill := "coup de poing"
 	pvMax := map[string]int{
-		"Humain": 100,
-		"Elfe":   80,
-		"Nain":   120,
+		"Netrunner": 100,
+		"Assassin":   75,
+		"Berserk":   125,
 	}[class]
 
 	return character{
 		name:       name,
 		class:      class,
-		skill:      "Coup de Poing",
+		skill:      skill,
 		level:      1,
 		pvMax:      pvMax,
 		pvAct:      pvMax / 2,

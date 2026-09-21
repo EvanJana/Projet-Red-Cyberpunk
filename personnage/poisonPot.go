@@ -19,6 +19,5 @@ func poisonPot(pvMonstre int) int {
 			time.Sleep(1 * time.Second)
 		}
 	}
-
 	return pvMonstre
 }
