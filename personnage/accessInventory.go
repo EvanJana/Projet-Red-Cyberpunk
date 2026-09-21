@@ -3,14 +3,12 @@ package main
 import  "fmt"
 func accessInventory(c *character) {
 	if len(c.inventaire) == 0 {
-		fmt.Println("Inventaire vide.")
-	} else if len(c.inventaire)>10{
-		limiteinv(c.inventaire)
-	}else{
-		for objet, quantite := range c.inventaire {
-			fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
-		}
-	}
+        fmt.Println("Inventaire vide.")
+    } else {
+        for objet, quantite := range c.inventaire {
+            fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
+        }
+    }
 
 	fmt.Println("1. Utiliser un objet")
 	fmt.Println("2. Marchand")
