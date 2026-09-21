@@ -35,7 +35,9 @@ func accessInventory(c *character) {
 		case "4", "Bottes de soldat":
 			fmt.Println("Vous avez utilisez les Bottes de soldat")
 		case "5", "Gants de précision":
-			
+			fmt.Println("Vous avez utilisez les Gants de précision")
+		case "6", "Virus":
+			fmt.Println("Vous avez utilisez les Virus")
 
 		default:
 			if _, existe := c.inventaire[objet]; existe {

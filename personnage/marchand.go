@@ -16,7 +16,7 @@ var choix = map[int]string{
 	6:  "Armure de combat",
 	7:  "Bottes de soldat",
 	8:  "Gants de précision",
-	9: "Potion de poison",
+	9: "Virus",
 }
 
 var objects = map[string]int{
