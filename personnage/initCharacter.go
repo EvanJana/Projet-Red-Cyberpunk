@@ -43,17 +43,16 @@ func characterCreation() character {
 }
 
 func initCharacter(name, class string) character {
-	skill := "coup de poing"
 	pvMax := map[string]int{
 		"Netrunner": 100,
-		"Assassin":   75,
+		"Assassin":  75,
 		"Berserk":   125,
 	}[class]
 
 	return character{
 		name:       name,
 		class:      class,
-		skill:      skill,
+		skill:      []string{"Coup de Poing"},
 		level:      1,
 		pvMax:      pvMax,
 		pvAct:      pvMax / 2,

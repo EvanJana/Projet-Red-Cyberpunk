@@ -13,6 +13,7 @@ func menu(c *character) bool {
 	switch choixMenu {
 	case "1":
 		displayInfo(*c)
+		displaySkill(*c)
 	case "2":
 		accessInventory(c)
 	case "3":

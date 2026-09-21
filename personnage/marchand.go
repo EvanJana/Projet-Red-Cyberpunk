@@ -8,27 +8,27 @@ import (
 var argent = 100000
 
 var choix = map[int]string{
-	1:  "Stimulant",
-	2:  "Surchage",
-	3:  "Crash",
-	4:  "Suicide",
-	5:  "IEM",
-	6:  "Armure de combat",
-	7:  "Bottes de soldat",
-	8:  "Gants de précision",
+	1: "Stimulant",
+	2: "Programme : Surcharge",
+	3: "Programme : Crash",
+	4: "Programme : Suicide",
+	5: "IEM",
+	6: "Armure de combat",
+	7: "Bottes de soldat",
+	8: "Gants de précision",
 	9: "Virus",
 }
 
 var objects = map[string]int{
-	"Stimulant":          30,
-	"Surchage":           100,
-	"Crash":              110,
-	"Suicide":            400,
-	"IEM":                50,
-	"Armure de combat":   150,
-	"Bottes de soldat":   80,
-	"Gants de précision": 60,
-	"Potion de poison":   40,
+	"Stimulant":             30,
+	"Programme : Surcharge": 100,
+	"Programme : Crash":     110,
+	"Programme : Suicide":   400,
+	"IEM":                   50,
+	"Armure de combat":      150,
+	"Bottes de soldat":      80,
+	"Gants de précision":    60,
+	"Virus":                 40,
 }
 
 func marchand(inventaire map[string]int) {
@@ -44,7 +44,7 @@ func marchand(inventaire map[string]int) {
 		objet := choix[numero]
 		fmt.Printf("%d. %s - $%d\n", numero, objet, objects[objet])
 	}
-	fmt.Println("11. Retour")
+	fmt.Println("10. Retour")
 
 	var choixAcheteur int
 	fmt.Scan(&choixAcheteur)
@@ -64,10 +64,6 @@ func marchand(inventaire map[string]int) {
 		fmt.Println("Tu n'as pas assez d'argent.")
 		return
 	}
-	if limiteinv(inventaire) {
-		return
-	}
-
 	argent -= prix
 	addInventory(inventaire, objet)
 	fmt.Printf("Achat effectué : %s\n", objet)

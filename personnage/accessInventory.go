@@ -1,56 +1,105 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 func accessInventory(c *character) {
-	if len(c.inventaire) == 0 {
+	fmt.Println("\n=== INVENTAIRE ===")
+	objets := inventoryItems(c.inventaire)
+	if len(objets) == 0 {
 		fmt.Println("Inventaire vide.")
-		return
-	}
-
-	for objet, quantite := range c.inventaire {
-		fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
+	} else {
+		for numero, objet := range objets {
+			fmt.Printf("%d. %s (Quantite : %d)\n", numero+1, objet, c.inventaire[objet])
+		}
 	}
 
 	fmt.Println("1. Utiliser un objet")
-	fmt.Println("2. Accéder au marchand")
-	fmt.Println("3. Retour")
+	fmt.Println("2. Acceder au marchand")
+	fmt.Println("3. Acceder a l'ordinateur")
+	fmt.Println("4. Retour")
 
 	var choix string
 	fmt.Scan(&choix)
 
 	switch choix {
 	case "1":
-		fmt.Println("Quel objet voulez-vous utiliser ?")
-		var objet string
-		fmt.Scan(&objet)
-
-		switch objet {
-		case "1", "stimulant", "Stimulant":
-			takePot(c)
-		case "2", "IEM":
-			fmt.Println("vous avez utilisez l'IEM")
-		case "3", "Armure de combat":
-			fmt.Println("vous avez utilisez l'Armure de combat")
-		case "4", "Bottes de soldat":
-			fmt.Println("Vous avez utilisez les Bottes de soldat")
-		case "5", "Gants de précision":
-			fmt.Println("Vous avez utilisez les Gants de précision")
-		case "6", "Virus":
-			fmt.Println("Vous avez utilisez les Virus")
-
-		default:
-			if _, existe := c.inventaire[objet]; existe {
-				fmt.Printf("L'objet %q ne peut pas encore être utilisé.\n", objet)
-			} else {
-				fmt.Println("Objet introuvable dans l'inventaire.")
-			}
-		}
+		useInventoryItem(c, objets)
 	case "2":
 		accessMerchant(c)
 	case "3":
+		accessComputer(c)
+	case "4":
 		fmt.Println("Retour au menu principal.")
 	default:
 		fmt.Println("Choix invalide.")
 	}
+}
+
+func inventoryItems(inventaire map[string]int) []string {
+	objets := make([]string, 0, len(inventaire))
+	for objet, quantite := range inventaire {
+		if quantite > 0 {
+			objets = append(objets, objet)
+		}
+	}
+	sort.Strings(objets)
+	return objets
+}
+
+func useInventoryItem(c *character, objets []string) {
+	if len(objets) == 0 {
+		fmt.Println("Aucun objet utilisable.")
+		return
+	}
+
+	fmt.Println("Entrez le numero de l'objet a utiliser :")
+	var numero int
+	fmt.Scan(&numero)
+	if numero < 1 || numero > len(objets) {
+		fmt.Println("Objet introuvable dans l'inventaire.")
+		return
+	}
+
+	objet := objets[numero-1]
+	switch objet {
+	case "Stimulant":
+		takePot(c)
+	case "Virus":
+		removeInventory(c.inventaire, objet)
+		poisonPot(100)
+	default:
+		fmt.Printf("L'objet %q ne peut pas encore etre utilise directement.\n", objet)
+	}
+}
+
+func accessComputer(c *character) {
+	programmes := make([]string, 0)
+	for programme := range programmeSorts {
+		if c.inventaire[programme] > 0 {
+			programmes = append(programmes, programme)
+		}
+	}
+	sort.Strings(programmes)
+
+	if len(programmes) == 0 {
+		fmt.Println("Vous n'avez aucun programme dans votre inventaire.")
+		return
+	}
+
+	fmt.Println("=== ORDINATEUR ===")
+	for numero, programme := range programmes {
+		fmt.Printf("%d. %s\n", numero+1, programme)
+	}
+	fmt.Println("0. Retour")
+
+	var choixProgramme int
+	fmt.Scan(&choixProgramme)
+	if choixProgramme < 1 || choixProgramme > len(programmes) {
+		return
+	}
+
+	spellBook(c, programmes[choixProgramme-1])
 }

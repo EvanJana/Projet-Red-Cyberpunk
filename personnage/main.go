@@ -1,7 +1,8 @@
 package main
 
 type character struct {
-	name, class, skill       string
+	name, class              string
+	skill                    []string
 	level, pvMax, pvAct, niv int
 	inventaire               map[string]int
 }
