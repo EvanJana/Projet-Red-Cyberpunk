@@ -1,13 +1,13 @@
 package main
 
 type character struct {
-	name, class         string
-	level, pvMax, pvAct int
-	inventaire          map[string]int
+	name, class, skill       string
+	level, pvMax, pvAct, niv int
+	inventaire               map[string]int
 }
 
 func main() {
-	c := initCharacter()
+	c := characterCreation()
 	displayInfo(c)
 
 	for menu(&c) {

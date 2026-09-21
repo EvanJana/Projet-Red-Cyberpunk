@@ -1,49 +1,81 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+	"unicode"
+)
 
-func initCharacter() character {
-	fmt.Println("=== CRÉATION DU PERSONNAGE ===")
-	fmt.Println("Entrez le nom de votre personnage (uniquement des lettres) :")
-	var saisename string
-	fmt.Scan(&saisename)
-
-	fmt.Println("Choisissez votre classe :")
-	fmt.Println("1. Netrunner (100 PV max)")
-	fmt.Println("2. Assassin (75 PV max)")
-	fmt.Println("3. Berserk (125 PV max)")
-	fmt.Println("nom de la classe :")
-	var saisieclass string
-	fmt.Scan(&saisieclass)
-
-	var pvMax int
-	inventaire := make(map[string]int)
-	switch saisieclass {
-	case "2", "Assassin", "assassin":
-		pvMax = 75
-		saisieclass = "Assassin"
-		inventaire["Stimulant"] = 3
-	case "1", "Netrunner", "netrunner":
-		pvMax = 100
-		saisieclass = "Netrunner"
-		inventaire["Stimulant"] = 2
-	case "3", "Berserk", "berserk":
-		pvMax = 125
-		saisieclass = "Berserk"
-		inventaire["Stimulant"] = 1
-	default:
-		fmt.Println("Classe inconnue, attribution de la classe Netrunner par défaut.")
-		saisieclass = "Netrunner"
-		pvMax = 100
-		inventaire["Stimulant"] = 2
+func characterCreation() character {
+	var name string
+	for {
+		fmt.Println("Entrez le nom de votre personnage (uniquement des lettres) :")
+		fmt.Scan(&name)
+		if isLettersOnly(name) {
+			name = formatName(name)
+			break
+		}
+		fmt.Println("Le nom doit contenir uniquement des lettres.")
 	}
+
+	var class string
+	for {
+		fmt.Println("Choisissez votre classe :")
+		fmt.Println("1. Humain (100 PV max)")
+		fmt.Println("2. Elfe (80 PV max)")
+		fmt.Println("3. Nain (120 PV max)")
+		fmt.Scan(&class)
+
+		switch strings.ToLower(class) {
+		case "1", "humain":
+			class = "Humain"
+		case "2", "elfe":
+			class = "Elfe"
+		case "3", "nain":
+			class = "Nain"
+		default:
+			fmt.Println("Classe invalide.")
+			continue
+		}
+		break
+	}
+
+	return initCharacter(name, class)
+}
+
+func initCharacter(name, class string) character {
+	pvMax := map[string]int{
+		"Humain": 100,
+		"Elfe":   80,
+		"Nain":   120,
+	}[class]
 
 	return character{
-		name:       saisename,
-		class:      saisieclass,
+		name:       name,
+		class:      class,
+		skill:      "Coup de Poing",
 		level:      1,
 		pvMax:      pvMax,
-		pvAct:      pvMax,
-		inventaire: inventaire,
+		pvAct:      pvMax / 2,
+		inventaire: make(map[string]int),
 	}
+}
+
+func isLettersOnly(value string) bool {
+	if value == "" {
+		return false
+	}
+	for _, character := range value {
+		if !unicode.IsLetter(character) {
+			return false
+		}
+	}
+	return true
+}
+
+func formatName(name string) string {
+	name = strings.ToLower(name)
+	runes := []rune(name)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
 }

@@ -35,7 +35,7 @@ func accessInventory(c *character) {
 		case "4", "Lanceur de projectiles":
 			fmt.Println("Vous avez obtenu la capacité Lanceur de projectiles")
 		case "6", "virus":
-
+			poisonPot(10)
 		default:
 			if _, existe := c.inventaire[objet]; existe {
 				fmt.Printf("L'objet %q ne peut pas encore être utilisé.\n", objet)
