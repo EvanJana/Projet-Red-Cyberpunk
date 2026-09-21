@@ -64,6 +64,9 @@ func marchand(inventaire map[string]int) {
 		fmt.Println("Tu n'as pas assez d'argent.")
 		return
 	}
+	if limiteinv(inventaire) {
+		return
+	}
 
 	argent -= prix
 	addInventory(inventaire, objet)
