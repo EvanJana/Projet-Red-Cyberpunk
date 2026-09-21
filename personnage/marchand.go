@@ -75,7 +75,11 @@ func marchand(inventaire map[string]int) {
 }
 
 func addInventory(inventaire map[string]int, objet string) {
-	inventaire[objet]++
+	if limiteinv(inventaire) ==true {
+		fmt.Println("Inventaire plein")
+	}else{
+		inventaire[objet]++
+	}
 }
 
 func removeInventory(inventaire map[string]int, objet string) {

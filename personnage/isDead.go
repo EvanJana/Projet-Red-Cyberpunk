@@ -1,8 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
-func isdead(c *character) {
+func isDead(c *character) {
 	if c.pvAct != 0 {
 		return
 	}
@@ -19,5 +22,6 @@ func isdead(c *character) {
 		c.pvAct = c.pvMax / 2
 	case "2", "Quitter", "quitter":
 		fmt.Println("Au revoir !")
+		os.Exit(0)
 	}
 }

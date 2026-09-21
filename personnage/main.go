@@ -11,6 +11,6 @@ func main() {
 	displayInfo(c)
 
 	for menu(&c) {
-		isdead(&c)
+		isDead(&c)
 	}
 }
