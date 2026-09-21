@@ -22,20 +22,20 @@ func initCharacter() character {
 	case "2", "Assassin", "assassin":
 		pvMax = 75
 		saisieclass = "Assassin"
-		inventaire["1.stimulant"] = 3
+		inventaire["Stimulant"] = 3
 	case "1", "Netrunner", "netrunner":
 		pvMax = 100
 		saisieclass = "Netrunner"
-		inventaire["1.stimulant"] = 2
+		inventaire["Stimulant"] = 2
 	case "3", "Berserk", "berserk":
 		pvMax = 125
 		saisieclass = "Berserk"
-		inventaire["1.stimulant"] = 1
+		inventaire["Stimulant"] = 1
 	default:
 		fmt.Println("Classe inconnue, attribution de la classe Netrunner par défaut.")
 		saisieclass = "Netrunner"
 		pvMax = 100
-		inventaire["1.stimulant"] = 2
+		inventaire["Stimulant"] = 2
 	}
 
 	return character{

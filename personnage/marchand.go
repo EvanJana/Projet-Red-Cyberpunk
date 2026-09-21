@@ -74,3 +74,17 @@ func marchand(inventaire map[string]int) {
 func addInventory(inventaire map[string]int, objet string) {
 	inventaire[objet]++
 }
+
+func removeInventory(inventaire map[string]int, objet string) {
+	quantite, existe := inventaire[objet]
+	if !existe {
+		return
+	}
+
+	if quantite <= 1 {
+		delete(inventaire, objet)
+		return
+	}
+
+	inventaire[objet] = quantite - 1
+}
