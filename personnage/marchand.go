@@ -8,27 +8,27 @@ import (
 var argent = 100000
 
 var choix = map[int]string{
-	1: "Stimulant",
-	2: "Surchage",
-	3: "Crash",
-	4: "Suicide",
-	5: "IEM",
-	6: "Exosquelette",
-	7: "Armure de combat",
-	8: "Bottes de soldat",
-	9: "Gants de précision",
+	1:  "Stimulant",
+	2:  "Surchage",
+	3:  "Crash",
+	4:  "Suicide",
+	5:  "IEM",
+	6:  "Armure de combat",
+	7:  "Bottes de soldat",
+	8:  "Gants de précision",
+	9: "Potion de poison",
 }
 
 var objects = map[string]int{
-	"Stimulant":         30,
+	"Stimulant":          30,
 	"Surchage":           100,
 	"Crash":              110,
 	"Suicide":            400,
 	"IEM":                50,
-	"Exosquelette":       200,
 	"Armure de combat":   150,
 	"Bottes de soldat":   80,
 	"Gants de précision": 60,
+	"Potion de poison":   40,
 }
 
 func marchand(inventaire map[string]int) {
@@ -44,7 +44,7 @@ func marchand(inventaire map[string]int) {
 		objet := choix[numero]
 		fmt.Printf("%d. %s - $%d\n", numero, objet, objects[objet])
 	}
-	fmt.Println("10. Retour")
+	fmt.Println("11. Retour")
 
 	var choixAcheteur int
 	fmt.Scan(&choixAcheteur)
@@ -75,9 +75,9 @@ func marchand(inventaire map[string]int) {
 }
 
 func addInventory(inventaire map[string]int, objet string) {
-	if limiteinv(inventaire) ==true {
+	if limiteinv(inventaire) == true {
 		fmt.Println("Inventaire plein")
-	}else{
+	} else {
 		inventaire[objet]++
 	}
 }

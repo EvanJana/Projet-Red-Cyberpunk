@@ -1,17 +1,19 @@
 package main
 
-import  "fmt"
+import "fmt"
+
 func accessInventory(c *character) {
 	if len(c.inventaire) == 0 {
-        fmt.Println("Inventaire vide.")
-    } else {
-        for objet, quantite := range c.inventaire {
-            fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
-        }
-    }
+		fmt.Println("Inventaire vide.")
+		return
+	}
+
+	for objet, quantite := range c.inventaire {
+		fmt.Printf("Objet : %s, Quantité : %d\n", objet, quantite)
+	}
 
 	fmt.Println("1. Utiliser un objet")
-	fmt.Println("2. Marchand")
+	fmt.Println("2. Accéder au marchand")
 	fmt.Println("3. Retour")
 
 	var choix string
@@ -26,14 +28,15 @@ func accessInventory(c *character) {
 		switch objet {
 		case "1", "stimulant", "Stimulant":
 			takePot(c)
-		case "2", "Lames Mantis":
-			fmt.Println("Vous avez obtenu la capacité Lames Mantis")
-		case "3", "Gorilla Arms":
-			fmt.Println("Vous avez obtenu la capacité Gorilla Arms")
-		case "4", "Lanceur de projectiles":
-			fmt.Println("Vous avez obtenu la capacité Lanceur de projectiles")
-		case "6", "virus":
-			poisonPot(10)
+		case "2", "IEM":
+			fmt.Println("vous avez utilisez l'IEM")
+		case "3", "Armure de combat":
+			fmt.Println("vous avez utilisez l'Armure de combat")
+		case "4", "Bottes de soldat":
+			fmt.Println("Vous avez utilisez les Bottes de soldat")
+		case "5", "Gants de précision":
+			
+
 		default:
 			if _, existe := c.inventaire[objet]; existe {
 				fmt.Printf("L'objet %q ne peut pas encore être utilisé.\n", objet)
