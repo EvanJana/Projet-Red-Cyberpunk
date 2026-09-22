@@ -86,7 +86,7 @@ func useInventoryItem(c *character, objets []string) {
 	}
 	for numero, objet := range objets {
 		fmt.Printf("%d. %s x%d\n", numero+1, objet, c.inventaire[objet])
-	}	
+	}
 	fmt.Println("Entrez le numero de l'objet a utiliser :")
 	var numero int
 	fmt.Scan(&numero)

@@ -7,7 +7,8 @@ func menu(c *character) bool {
 	fmt.Println("1. Afficher les informations du personnage")
 	fmt.Println("2. Accéder au contenu de l’inventaire")
 	fmt.Println("3. Cyberforgeron")
-	fmt.Println("4. Quitter")
+	fmt.Println("4. Combattre")
+	fmt.Println("5. Quitter")
 	fmt.Println("==================================")
 
 	var choixMenu string
@@ -22,6 +23,8 @@ func menu(c *character) bool {
 	case "3":
 		ferailleur(c)
 	case "4":
+		trainingFight(c)
+	case "5":
 		fmt.Println("Au revoir !")
 		return false
 	default:
