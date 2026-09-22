@@ -29,7 +29,17 @@ func dropAleatoire() string {
 	}
 }
 
-func monster(nombreRencontres int) Ennemi {
+func robotEntrainement() Ennemi {
+	return Ennemi{
+		Nom:      "Robot d'entraînement",
+		Drop:     "dollars",
+		PVMax:    40,
+		PVActuel: 40,
+		Degats:   5,
+	}
+}
+
+func monstre(nombreRencontres int) Ennemi {
 	if nombreRencontres > 0 && nombreRencontres%10 == 0 {
 		return Ennemi{
 			Nom:      "Adam Smasher",
@@ -72,9 +82,13 @@ func monster(nombreRencontres int) Ennemi {
 	}
 
 	choixAleatoire := rand.Intn(len(ennemisNormaux))
-	ennemi := ennemisNormaux[choixAleatoire]
-	ennemi.Drop = dropAleatoire()
-	return ennemi
+	monstreAleatoire := ennemisNormaux[choixAleatoire]
+	monstreAleatoire.Drop = dropAleatoire()
+	return monstreAleatoire
+}
+
+func monster(nombreRencontres int) Ennemi {
+	return monstre(nombreRencontres)
 }
 func initAdamSmasher() {
 	nomMonstre := "Adam Smasher"

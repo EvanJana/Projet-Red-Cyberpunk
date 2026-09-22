@@ -12,6 +12,7 @@ func menu(c *character) bool {
 	fmt.Println("==================================")
 
 	var choixMenu string
+	var choixCombat string
 	fmt.Scan(&choixMenu)
 
 	switch choixMenu {
@@ -23,7 +24,18 @@ func menu(c *character) bool {
 	case "3":
 		ferailleur(c)
 	case "4":
-		trainingFight(c)
+		fmt.Println("1. entrainement")
+		fmt.Println("2. combat")
+		fmt.Scan(&choixCombat)
+		switch choixCombat {
+		case "1":
+			trainingFight(c)
+			resetCombatHP(c)
+		case "2":
+			combat(c)
+			resetCombatHP()
+		}
+		
 	case "5":
 		fmt.Println("Au revoir !")
 		return false

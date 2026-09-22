@@ -2,8 +2,14 @@ package main
 
 import "fmt"
 
+func resetCombatHP(c *character) {
+	if c.pvAct > 0 {
+		c.pvAct = c.pvMax
+	}
+}
+
 func trainingFight(c *character) {
-	adversaire := monster(1)
+	adversaire := robotEntrainement()
 	tourCombat := 1
 
 	fmt.Println("=== COMBAT ===")
@@ -14,29 +20,40 @@ func trainingFight(c *character) {
 		fmt.Println("================================")
 		fmt.Println("           TOUR", tourCombat)
 		fmt.Println("================================")
-		characterTurn(c, &adversaire)
+		if characterTurn(c, &adversaire) {
+			fmt.Println("Vous avez fui le combat.")
+			break
+		}
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monsterPattern(c, &adversaire, tourCombat)
+		monstrePattern(c, &adversaire, tourCombat)
 		tourCombat++
 	}
 
 	if adversaire.PVActuel == 0 {
 		fmt.Println("Victoire !", adversaire.Nom, "est vaincu.")
 		if adversaire.Drop != "" {
-			fmt.Println("Vous récupérez :", adversaire.Drop)
-			addInventory(c, adversaire.Drop, 1)
+			if adversaire.Drop == "dollars" {
+				c.argent += 10
+				fmt.Println("Vous récupérez 25 dollars.")
+			} else {
+				fmt.Println("Vous récupérez :", adversaire.Drop)
+				addInventory(c, adversaire.Drop, 1)
+			}
 		}
-	} else {
+	} else if c.pvAct <= 0 {
 		fmt.Println("Defaite ! Votre personnage est K.O.")
+	} else {
+		fmt.Println("Le combat est interrompu.")
 	}
 }
 
-func characterTurn(c *character, adversaire *Ennemi) {
+func characterTurn(c *character, adversaire *Ennemi) bool {
 	fmt.Println("=== MENU DE COMBAT ===")
 	fmt.Println("1. Attaquer")
 	fmt.Println("2. Inventaire")
+	fmt.Println("3. Fuir")
 
 	var choix string
 	fmt.Scan(&choix)
@@ -44,10 +61,15 @@ func characterTurn(c *character, adversaire *Ennemi) {
 	switch choix {
 	case "1", "Attaquer", "attaquer":
 		attackChoice(c, adversaire)
+		return false
 	case "2", "Inventaire", "inventaire":
 		accessInventory(c)
+		return false
+	case "3", "Fuir", "fuir":
+		return true
 	default:
 		fmt.Println("Choix invalide.")
+		return false
 	}
 }
 
@@ -104,7 +126,7 @@ func applyDamage(pvActuel *int, degats int) {
 	}
 }
 
-func monsterPattern(c *character, adversaire *Ennemi, tour int) {
+func monstrePattern(c *character, adversaire *Ennemi, tour int) {
 	degats := adversaire.Degats
 	message := adversaire.Nom + " attaque !"
 
@@ -122,11 +144,19 @@ func monsterPattern(c *character, adversaire *Ennemi, tour int) {
 		}
 	}
 
-	monsterTurn(c, degats, message)
+	monstreTurn(c, degats, message)
 }
 
-func monsterTurn(c *character, degats int, message string) {
+func monsterPattern(c *character, adversaire *Ennemi, tour int) {
+	monstrePattern(c, adversaire, tour)
+}
+
+func monstreTurn(c *character, degats int, message string) {
 	fmt.Println(message, "Il inflige", degats, "degats.")
 	applyDamage(&c.pvAct, degats)
 	fmt.Println("PV restants de", c.name, ":", c.pvAct, "/", c.pvMax)
+}
+
+func monsterTurn(c *character, degats int, message string) {
+	monstreTurn(c, degats, message)
 }
