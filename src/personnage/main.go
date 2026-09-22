@@ -12,7 +12,6 @@ type character struct {
 func main() {
 	c := characterCreation()
 	displayInfo(c)
-
 	for menu(&c) {
 		isDead(&c)
 	}

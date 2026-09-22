@@ -14,7 +14,7 @@ var recettesForge = map[string]map[string]int{
 	"Gants de précision": {"Cuir": 1, "Puce neuronale": 2},
 }
 
-func ferailleur(inventaire map[string]int) bool {
+func ferailleur(c *character) bool {
 	fmt.Println("================================")
 	fmt.Println("Bienvenue dans ma forge ! \nQue voulez-vous fabriquer ?")
 	fmt.Println(choixForge)
@@ -33,7 +33,7 @@ func ferailleur(inventaire map[string]int) bool {
 
 	materiauxManquants := false
 	for materiau, quantiteRequise := range recette {
-		if inventaire[materiau] < quantiteRequise {
+		if c.inventaire[materiau] < quantiteRequise {
 			materiauxManquants = true
 		}
 	}
@@ -41,17 +41,17 @@ func ferailleur(inventaire map[string]int) bool {
 	if materiauxManquants == true {
 		fmt.Println("Il te manque des matériaux pour fabriquer cet objet")
 		for materiau, quantiteRequise := range recette {
-			fmt.Printf(" - %s : %d requis, %d possédé(s)\n", materiau, quantiteRequise, inventaire[materiau])
+			fmt.Printf(" - %s : %d requis, %d possédé(s)\n", materiau, quantiteRequise, c.inventaire[materiau])
 		}
 		return false
-	} else if limiteinv(inventaire) {
+	} else if limiteinv(c.inventaire, c.InventoryCapacity) {
 		fmt.Println("Tu ne peux pas fabriquer plus d'objets, ton inventaire est plein.")
 		return false
 	} else {
 		for materiau, quantiteRequise := range recette {
-			inventaire[materiau] -= quantiteRequise
+			c.inventaire[materiau] -= quantiteRequise
 		}
-		inventaire[objet] += 1
+		c.inventaire[objet] += 1
 		fmt.Printf("Fabrication réussie : %s\n", objet)
 		fmt.Println("================================")
 		return true

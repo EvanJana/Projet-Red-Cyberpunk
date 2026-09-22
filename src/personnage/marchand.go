@@ -32,7 +32,7 @@ var objects = map[string]int{
 	"Virus":                 40,
 }
 
-func marchand(inventaire map[string]int) {
+func marchand(c *character) {
 	fmt.Printf("Argent disponible : $%d\n", argent)
 
 	numeros := make([]int, 0, len(choix))
@@ -65,17 +65,37 @@ func marchand(inventaire map[string]int) {
 		fmt.Println("Tu n'as pas assez d'argent.")
 		return
 	}
-	argent -= prix
-	addInventory(inventaire, objet)
-	fmt.Printf("Achat effectué : %s\n", objet)
+
+	fmt.Printf("Combien de %s veux-tu acheter ?\n", objet)
+	var quantite int
+	fmt.Scan(&quantite)
+	if quantite <= 0 {
+		fmt.Println("La quantité doit être supérieure à zéro.")
+		return
+	}
+
+	prixTotal := prix * quantite
+	if argent < prixTotal {
+		fmt.Println("Tu n'as pas assez d'argent pour cette quantité.")
+		return
+	}
+
+	if inventoryCount(c.inventaire)+quantite > c.InventoryCapacity {
+		fmt.Printf("Achat annulé : il ne reste que %d place(s) dans l'inventaire.\n", c.InventoryCapacity-inventoryCount(c.inventaire))
+		return
+	}
+
+	argent -= prixTotal
+	c.inventaire[objet] += quantite
+	fmt.Printf("Achat effectué : %d x %s\n", quantite, objet)
 	fmt.Printf("Il vous reste $%d\n", argent)
 }
 
-func addInventory(inventaire map[string]int, objet string) {
-	if limiteinv(inventaire) == true {
+func addInventory(inventaire map[string]int, objet string, capacite int) {
+	if limiteinv(inventaire, capacite) == true {
 		fmt.Println("Inventaire plein")
 	} else {
-		inventaire[objet] ++
+		inventaire[objet]++
 	}
 }
 

@@ -20,7 +20,7 @@ func menu(c *character) bool {
 	case "2":
 		accessInventory(c)
 	case "3":
-		ferailleur(c.inventaire)
+		ferailleur(c)
 	case "4":
 		fmt.Println("Au revoir !")
 		return false
