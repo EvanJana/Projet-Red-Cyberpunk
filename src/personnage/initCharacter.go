@@ -57,6 +57,8 @@ func initCharacter(name, class string) character {
 		pvMax:      pvMax,
 		pvAct:      pvMax / 2,
 		inventaire: make(map[string]int),
+		InventoryCapacity:   	10,
+		InventoryUpgradesCnt:    1,
 	}
 }
 

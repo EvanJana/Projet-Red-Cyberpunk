@@ -8,7 +8,7 @@ func limiteinv(inventaire map[string]int) bool {
 		total += quantite
 	}
 
-	if total >= 10 {
+	if total >= characterCreation().InventoryCapacity {
 		fmt.Println("Vous avez atteint la limite d'objets dans l'inventaire")
 		return true
 	}

@@ -5,6 +5,8 @@ type character struct {
 	skill                    []string
 	level, pvMax, pvAct, niv int
 	inventaire               map[string]int
+	InventoryCapacity    	 int
+	InventoryUpgradesCnt 	 int
 }
 
 func main() {

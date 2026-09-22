@@ -8,6 +8,8 @@ func displayInfo(c character) {
 	fmt.Printf("Classe      : %s\n", c.class)
 	fmt.Printf("Niveau      : %d\n", c.level)
 	fmt.Printf("Points de vie : %d / %d\n", c.pvAct, c.pvMax)
-	fmt.Printf("Inventaire  : Stimulant x%d\n", c.inventaire["Stimulant"])
-	fmt.Println("==================================")
+	fmt.Println("Inventaire :")
+	for nomObjet, quantite := range c.inventaire {
+		fmt.Printf("- %s x%d\n", nomObjet, quantite)
+	}
 }

@@ -19,7 +19,8 @@ func accessInventory(c *character) {
 	fmt.Println("1. Utiliser un objet")
 	fmt.Println("2. Acceder au marchand")
 	fmt.Println("3. Acceder a l'ordinateur")
-	fmt.Println("4. Retour")
+	fmt.Println("4. Augmenter la capacitée de l'inventaire")
+	fmt.Println("5. Retour")
 
 	var choix string
 	fmt.Scan(&choix)
@@ -32,6 +33,8 @@ func accessInventory(c *character) {
 	case "3":
 		accessComputer(c)
 	case "4":
+		upgradeInventorySlot(c)
+	case "5":
 		fmt.Println("Retour au menu principal.")
 	default:
 		fmt.Println("Choix invalide.")
