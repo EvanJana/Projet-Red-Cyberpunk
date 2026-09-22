@@ -33,7 +33,6 @@ func menu(c *character) bool {
 			resetCombatHP(c)
 		case "2":
 			combat(c)
-			resetCombatHP()
 		}
 		
 	case "5":

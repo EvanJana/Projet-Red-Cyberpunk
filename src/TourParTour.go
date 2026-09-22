@@ -8,7 +8,50 @@ func resetCombatHP(c *character) {
 	}
 }
 
+func combat(c *character) {
+	resetCombatHP(c)
+	adversaire := monstre(0)
+	tourCombat := 1
+
+	fmt.Println("=== COMBAT ===")
+	fmt.Println("Vous affrontez", adversaire.Nom, "avec", adversaire.PVActuel, "PV.")
+
+	for c.pvAct > 0 && adversaire.PVActuel > 0 {
+		fmt.Println()
+		fmt.Println("================================")
+		fmt.Println("           TOUR", tourCombat)
+		fmt.Println("================================")
+		if characterTurn(c, &adversaire) {
+			fmt.Println("Vous avez fui le combat.")
+			break
+		}
+		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+			break
+		}
+		monstrePattern(c, &adversaire, tourCombat)
+		tourCombat++
+	}
+
+	if adversaire.PVActuel == 0 {
+		fmt.Println("Victoire !", adversaire.Nom, "est vaincu.")
+		if adversaire.Drop != "" {
+			if adversaire.Drop == "dollars" {
+				c.argent += 10
+				fmt.Println("Vous récupérez 25 dollars.")
+			} else {
+				fmt.Println("Vous récupérez :", adversaire.Drop)
+				addInventory(c, adversaire.Drop, 1)
+			}
+		}
+	} else if c.pvAct <= 0 {
+		fmt.Println("Defaite ! Votre personnage est K.O.")
+	} else {
+		fmt.Println("Le combat est interrompu.")
+	}
+}
+
 func trainingFight(c *character) {
+	resetCombatHP(c)
 	adversaire := robotEntrainement()
 	tourCombat := 1
 
