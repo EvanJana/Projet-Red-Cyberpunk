@@ -63,16 +63,24 @@ func ferailleur(c *character) bool {
 			fmt.Println("================================")
 		}
 		return false
-	} else {
-		if !addInventory(c, objet, 1) {
-			fmt.Println("Tu ne peux pas fabriquer cet objet, ton inventaire est plein.")
-			return false
-		}
-		for materiau, quantiteRequise := range recette {
-			c.inventaire[materiau] -= quantiteRequise
-		}
-		fmt.Printf("Fabrication réussie : %s\n", objet)
-		fmt.Println("================================")
-		return true
 	}
+
+	const prixFabrication = 5
+	if c.argent < prixFabrication {
+		fmt.Printf("Tu n'as pas assez d'argent : il faut %d pièces.\n", prixFabrication)
+		return false
+	}
+	if !addInventory(c, objet, 1) {
+		fmt.Println("Tu ne peux pas fabriquer cet objet, ton inventaire est plein.")
+		return false
+	}
+
+	for materiau, quantiteRequise := range recette {
+		c.inventaire[materiau] -= quantiteRequise
+	}
+	c.argent -= prixFabrication
+	fmt.Printf("Fabrication réussie : %s\n", objet)
+	fmt.Printf("Il vous reste %d pièces.\n", c.argent)
+	fmt.Println("================================")
+	return true
 }

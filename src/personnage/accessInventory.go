@@ -17,10 +17,11 @@ func accessInventory(c *character) {
 	}
 	fmt.Println("===================")
 	fmt.Println("1. Utiliser un objet")
-	fmt.Println("2. Acceder au marchand")
-	fmt.Println("3. Acceder a l'ordinateur")
-	fmt.Println("4. Augmenter la capacitée de l'inventaire")
-	fmt.Println("5. Retour")
+	fmt.Println("2. Equiper un objet")
+	fmt.Println("3. Acceder au marchand")
+	fmt.Println("4. Acceder a l'ordinateur")
+	fmt.Println("5. Augmenter la capacitée de l'inventaire")
+	fmt.Println("6. Retour")
 
 	var choix string
 	fmt.Scan(&choix)
@@ -29,16 +30,42 @@ func accessInventory(c *character) {
 	case "1":
 		useInventoryItem(c, objets)
 	case "2":
-		accessMerchant(c)
+		equipInventoryItem(c, objets)
 	case "3":
-		accessComputer(c)
+		accessMerchant(c)
 	case "4":
-		upgradeInventorySlot(c)
+		accessComputer(c)
 	case "5":
+		upgradeInventorySlot(c)
+	case "6":
 		fmt.Println("Retour au menu principal.")
 	default:
 		fmt.Println("Choix invalide.")
 	}
+}
+
+func equipInventoryItem(c *character, objets []string) {
+	equipements := make([]string, 0)
+	for _, objet := range objets {
+		if _, existe := slotParObjet[objet]; existe {
+			equipements = append(equipements, objet)
+		}
+	}
+	if len(equipements) == 0 {
+		fmt.Println("Aucun équipement disponible.")
+		return
+	}
+
+	for numero, objet := range equipements {
+		fmt.Printf("%d. %s\n", numero+1, objet)
+	}
+	var numero int
+	fmt.Scan(&numero)
+	if numero < 1 || numero > len(equipements) || !equiper(c, equipements[numero-1]) {
+		fmt.Println("Équipement invalide.")
+		return
+	}
+	fmt.Printf("Équipement équipé : %s\n", equipements[numero-1])
 }
 
 func inventoryItems(inventaire map[string]int) []string {
