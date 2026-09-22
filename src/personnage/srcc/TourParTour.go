@@ -2,27 +2,11 @@ package main
 
 import "fmt"
 
-type Ennemi struct {
-	Nom      string
-	PVMax    int
-	PVActuel int
-	Degats   int
-}
-
-func trainingRobot() Ennemi {
-	return Ennemi{
-		Nom:      "Robot d'entraînement",
-		PVMax:    40,
-		PVActuel: 40,
-		Degats:   5,
-	}
-}
-
 func trainingFight(c *character) {
-	adversaire := trainingRobot()
+	adversaire := monster(1)
 	tourCombat := 1
 
-	fmt.Println("=== COMBAT D'ENTRAINEMENT ===")
+	fmt.Println("=== COMBAT ===")
 	fmt.Println("Vous affrontez", adversaire.Nom, "avec", adversaire.PVActuel, "PV.")
 
 	for c.pvAct > 0 && adversaire.PVActuel > 0 {
@@ -34,12 +18,16 @@ func trainingFight(c *character) {
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monsterPattern(c, &adversaire)
+		monsterPattern(c, &adversaire, tourCombat)
 		tourCombat++
 	}
 
 	if adversaire.PVActuel == 0 {
-		fmt.Println("Victoire ! Le robot d'entraînement est vaincu.")
+		fmt.Println("Victoire !", adversaire.Nom, "est vaincu.")
+		if adversaire.Drop != "" {
+			fmt.Println("Vous récupérez :", adversaire.Drop)
+			addInventory(c, adversaire.Drop, 1)
+		}
 	} else {
 		fmt.Println("Defaite ! Votre personnage est K.O.")
 	}
@@ -116,12 +104,29 @@ func applyDamage(pvActuel *int, degats int) {
 	}
 }
 
-func monsterPattern(c *character, adversaire *Ennemi) {
-	monsterTurn(c, adversaire)
+func monsterPattern(c *character, adversaire *Ennemi, tour int) {
+	degats := adversaire.Degats
+	message := adversaire.Nom + " attaque !"
+
+	switch {
+	case adversaire.Boss:
+		degats, message = adamSmasherPattern(tour, adversaire.Degats)
+	case adversaire.Nom == "Cyberpsycho":
+		degats, message = cyberpsychoPattern(tour, adversaire.Degats)
+	case adversaire.Style != "":
+		var perdSonTour bool
+		degats, message, perdSonTour = punkQuartierPattern(adversaire.Style, tour, adversaire.Degats)
+		if perdSonTour {
+			fmt.Println(message)
+			return
+		}
+	}
+
+	monsterTurn(c, degats, message)
 }
 
-func monsterTurn(c *character, adversaire *Ennemi) {
-	fmt.Println(adversaire.Nom, "attaque et inflige", adversaire.Degats, "degats.")
-	applyDamage(&c.pvAct, adversaire.Degats)
+func monsterTurn(c *character, degats int, message string) {
+	fmt.Println(message, "Il inflige", degats, "degats.")
+	applyDamage(&c.pvAct, degats)
 	fmt.Println("PV restants de", c.name, ":", c.pvAct, "/", c.pvMax)
 }
