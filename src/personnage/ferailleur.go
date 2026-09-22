@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 var choixForge = map[int]string{
 	1: "Armure de combat",
@@ -17,9 +20,20 @@ var recettesForge = map[string]map[string]int{
 func ferailleur(c *character) bool {
 	fmt.Println("================================")
 	fmt.Println("Bienvenue dans ma forge ! \nQue voulez-vous fabriquer ?")
-	fmt.Println(choixForge)
+	for cle, valeur := range choixForge {
+		fmt.Printf("%v : %v\n", cle, valeur)
+		sort.Ints([]int{cle})
+	}
+	fmt.Println("4 : Retour")
+	fmt.Println("================================")
 	var nb int
 	fmt.Scan(&nb)
+
+	if nb == 4 {
+		fmt.Println("Retour au menu précédent.")
+		return false
+	}
+
 	if nb < 1 || nb > 3 {
 		fmt.Println("Je ne sais pas fabriquer ça, désolé.")
 		return false
@@ -37,11 +51,12 @@ func ferailleur(c *character) bool {
 			materiauxManquants = true
 		}
 	}
-
+	fmt.Println("================================")
 	if materiauxManquants == true {
 		fmt.Println("Il te manque des matériaux pour fabriquer cet objet")
 		for materiau, quantiteRequise := range recette {
 			fmt.Printf(" - %s : %d requis, %d possédé(s)\n", materiau, quantiteRequise, c.inventaire[materiau])
+			fmt.Println("================================")
 		}
 		return false
 	} else if limiteinv(c.inventaire, c.InventoryCapacity) {

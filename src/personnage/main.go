@@ -7,6 +7,12 @@ type character struct {
 	inventaire               map[string]int
 	InventoryCapacity    	 int
 	InventoryUpgradesCnt 	 int
+	equipment				equipement
+}
+type equipement struct {
+    torse  string
+    bottes string
+    gants  string
 }
 
 func main() {
