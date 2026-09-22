@@ -15,7 +15,7 @@ func accessInventory(c *character) {
 			fmt.Printf("%d. %s (Quantite : %d)\n", numero+1, objet, c.inventaire[objet])
 		}
 	}
-
+	fmt.Println("===================")
 	fmt.Println("1. Utiliser un objet")
 	fmt.Println("2. Acceder au marchand")
 	fmt.Println("3. Acceder a l'ordinateur")
@@ -57,7 +57,9 @@ func useInventoryItem(c *character, objets []string) {
 		fmt.Println("Aucun objet utilisable.")
 		return
 	}
-
+	for numero, objet := range objets {
+		fmt.Printf("%d. %s x%d\n", numero+1, objet, c.inventaire[objet])
+	}	
 	fmt.Println("Entrez le numero de l'objet a utiliser :")
 	var numero int
 	fmt.Scan(&numero)

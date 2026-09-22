@@ -14,12 +14,12 @@ func upgradeInventorySlot(c *character) bool {
 		fmt.Println("1. Voulez vous augmenter l'inventaire pour 30 pieces")
 		fmt.Println("2. Retour")
 		fmt.Scan(&choix)
-		if choix == "1" && argent >= prixUpgrade {
+		if choix == "1" && c.argent >= prixUpgrade {
 			c.InventoryUpgradesCnt++
 			c.InventoryCapacity += 10
-			argent -= prixUpgrade
-			fmt.Printf("Capacite inventaire = %d\n",c.InventoryCapacity)
-			fmt.Println("argent =",argent)
+			c.argent -= prixUpgrade
+			fmt.Printf("Capacite inventaire = %d\n", c.InventoryCapacity)
+			fmt.Println("Argent restant =", c.argent)
 			return true
 	}
 	}

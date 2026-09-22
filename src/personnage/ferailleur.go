@@ -20,9 +20,13 @@ var recettesForge = map[string]map[string]int{
 func ferailleur(c *character) bool {
 	fmt.Println("================================")
 	fmt.Println("Bienvenue dans ma forge ! \nQue voulez-vous fabriquer ?")
-	for cle, valeur := range choixForge {
-		fmt.Printf("%v : %v\n", cle, valeur)
-		sort.Ints([]int{cle})
+	numeros := make([]int, 0, len(choixForge))
+	for numero := range choixForge {
+		numeros = append(numeros, numero)
+	}
+	sort.Ints(numeros)
+	for _, numero := range numeros {
+		fmt.Printf("%d : %s\n", numero, choixForge[numero])
 	}
 	fmt.Println("4 : Retour")
 	fmt.Println("================================")
@@ -59,14 +63,14 @@ func ferailleur(c *character) bool {
 			fmt.Println("================================")
 		}
 		return false
-	} else if limiteinv(c.inventaire, c.InventoryCapacity) {
-		fmt.Println("Tu ne peux pas fabriquer plus d'objets, ton inventaire est plein.")
-		return false
 	} else {
+		if !addInventory(c, objet, 1) {
+			fmt.Println("Tu ne peux pas fabriquer cet objet, ton inventaire est plein.")
+			return false
+		}
 		for materiau, quantiteRequise := range recette {
 			c.inventaire[materiau] -= quantiteRequise
 		}
-		c.inventaire[objet] += 1
 		fmt.Printf("Fabrication réussie : %s\n", objet)
 		fmt.Println("================================")
 		return true

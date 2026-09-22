@@ -26,11 +26,11 @@ func characterCreation() character {
 		fmt.Scan(&class)
 
 		switch strings.ToLower(class) {
-		case "1", "Netrunner":
+		case "1", "netrunner":
 			class = "Netrunner"
 		case "2", "assassin":
 			class = "Assassin"
-		case "3", "Berserk":
+		case "3", "berserk":
 			class = "Berserk"
 		default:
 			fmt.Println("Classe invalide.")
@@ -50,15 +50,16 @@ func initCharacter(name, class string) character {
 	}[class]
 
 	return character{
-		name:       name,
-		class:      class,
-		skill:      []string{"Coup de Poing"},
-		level:      1,
-		pvMax:      pvMax,
-		pvAct:      pvMax / 2,
-		inventaire: make(map[string]int),
-		InventoryCapacity:   	10,
-		InventoryUpgradesCnt:    1,
+		name:                 name,
+		class:                class,
+		skill:                []string{"Coup de Poing"},
+		level:                1,
+		pvMax:                pvMax,
+		pvAct:                pvMax / 2,
+		argent:               100,
+		inventaire:           make(map[string]int),
+		InventoryCapacity:    10,
+		InventoryUpgradesCnt: 0,
 	}
 }
 

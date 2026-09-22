@@ -6,7 +6,7 @@ import (
 )
 
 func isDead(c *character) {
-	if c.pvAct != 0 {
+	if c.pvAct > 0 {
 		return
 	}
 
