@@ -4,6 +4,7 @@ type character struct {
 	name, class              string
 	skill                    []string
 	level, pvMax, pvAct, niv int
+	vientDeMourir            bool
 	argent                   int
 	inventaire               map[string]int
 	InventoryCapacity        int
@@ -18,6 +19,7 @@ type equipement struct {
 
 func main() {
 	c := characterCreation()
+	c.pvAct = c.pvMax
 	displayInfo(c)
 	for menu(&c) {
 		isDead(&c)

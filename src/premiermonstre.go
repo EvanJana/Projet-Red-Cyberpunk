@@ -106,35 +106,35 @@ func initCyberpsycho() {
 }
 func cyberpsychoPattern(tour int, degats int) (int, string) {
 	if tour > 0 && tour%3 == 0 {
-		return degats * 2, "Le Cyberpsycho utilise son attaque spéciale !"
+		return degats * 2, "Attaque spéciale"
 	}
 
-	return degats, "Le Cyberpsycho attaque !"
+	return degats, "Attaque basique"
 }
 func punkQuartierPattern(style string, tour int, degats int) (int, string, bool) {
 	switch style {
 	case "brutal":
-		return degats, "Le Punk brutal attaque au corps à corps !", false
+		return degats, "Attaque au corps à corps", false
 	case "tireur":
-		return degats, "Le Punk tireur ouvre le feu à distance !", false
+		return degats, "Tir à distance", false
 	case "junkie":
 		if rand.Intn(4) == 0 {
-			return 0, "Le Punk junkie fait une overdose et perd son tour !", true
+			return 0, "Overdose", true
 		}
 		if tour%2 == 0 {
-			return degats * 2, "Le Punk junkie attaque frénétiquement !", false
+			return degats * 2, "Attaque frénétique", false
 		}
-		return degats, "Le Punk junkie attaque de façon imprévisible !", false
+		return degats, "Attaque imprévisible", false
 	default:
-		return degats, "Le Punk de quartier attaque !", false
+		return degats, "Attaque basique", false
 	}
 }
 func adamSmasherPattern(tour int, degats int) (int, string) {
 	if tour > 0 && tour%5 == 0 {
-		return degats + 20, "Adam Smasher utilise son attaque spéciale Skullcrusher !"
+		return degats + 20, "Skullcrusher"
 	}
 
-	return degats, "Adam Smasher t'écrase !"
+	return degats, "Écrasement"
 }
 func tour(nomAttaquant string, degats int, pvActuel *int, pvMax int, nomCible string) (int, string) {
 	if *pvActuel <= 0 {
