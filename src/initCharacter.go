@@ -58,6 +58,11 @@ func initCharacter(name, class string) character {
 		"Assassin":  75,
 		"Berserk":   125,
 	}[class]
+	ramMax := map[string]int{
+		"Netrunner": 125,
+		"Assassin":  75,
+		"Berserk":   50,
+	}[class]
 
 	initiative := 1
 	switch class {
@@ -76,6 +81,8 @@ func initCharacter(name, class string) character {
 		level:                1,
 		pvMax:                pvMax,
 		pvAct:                pvMax / 2,
+		ramMax:               ramMax,
+		ramAct:               ramMax,
 		argent:               100,
 		inventaire:           make(map[string]int),
 		InventoryCapacity:    10,
