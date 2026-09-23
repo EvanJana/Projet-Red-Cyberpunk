@@ -9,6 +9,7 @@ func resetCombatHP(c *character) {
 	}
 
 	c.pvAct = c.pvMax
+	c.ramAct = c.ramMax
 }
 
 func affichageCombatDebut(c *character, adversaire Ennemi) {
@@ -16,7 +17,7 @@ func affichageCombatDebut(c *character, adversaire Ennemi) {
 	fmt.Println("========================================")
 	fmt.Println("             COMBAT EN COURS            ")
 	fmt.Println("========================================")
-	fmt.Printf("Joueur : %s  |  PV : %d/%d\n", c.name, c.pvAct, c.pvMax)
+	fmt.Printf("Joueur : %s  |  PV : %d/%d  |  RAM : %d/%d\n", c.name, c.pvAct, c.pvMax, c.ramAct, c.ramMax)
 	fmt.Printf("Adversaire : %s  |  PV : %d/%d\n", adversaire.Nom, adversaire.PVActuel, adversaire.PVMax)
 	fmt.Println("========================================")
 }
@@ -59,6 +60,14 @@ func combat(c *character) {
 				break
 			}
 		}
+<<<<<<< HEAD
+=======
+		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+			break
+		}
+		monstrePattern(c, &adversaire, tourCombat)
+		rechargeRAM(c)
+>>>>>>> 241c39769d402cd7d637ff8b7653451055c22a16
 		tourCombat++
 	}
 
@@ -119,6 +128,14 @@ func trainingFight(c *character) {
 				break
 			}
 		}
+<<<<<<< HEAD
+=======
+		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+			break
+		}
+		monstrePattern(c, &adversaire, tourCombat)
+		rechargeRAM(c)
+>>>>>>> 241c39769d402cd7d637ff8b7653451055c22a16
 		tourCombat++
 	}
 
@@ -197,11 +214,18 @@ func attackChoice(c *character, adversaire *Ennemi) bool {
 	}
 
 	skill := c.skill[choix-1]
+	coutRAM := skillRAMCost(skill)
+	if c.ramAct < coutRAM {
+		fmt.Printf("RAM insuffisante : %d/%d nécessaire.\n", c.ramAct, coutRAM)
+		return false
+	}
 	degats := skillDamage(skill)
+	c.ramAct -= coutRAM
 	fmt.Println("")
 	fmt.Println("========================================")
 	fmt.Printf("%s utilise %s\n", c.name, skill)
 	fmt.Printf("Dégâts infligés : %d\n", degats)
+	fmt.Printf("RAM utilisée : %d | RAM restante : %d/%d\n", coutRAM, c.ramAct, c.ramMax)
 	fmt.Println("========================================")
 	applyDamage(&adversaire.PVActuel, degats)
 	fmt.Printf("PV restants de %s : %d/%d\n", adversaire.Nom, adversaire.PVActuel, adversaire.PVMax)
@@ -221,6 +245,30 @@ func skillDamage(skill string) int {
 	default:
 		return 5
 	}
+}
+
+func skillRAMCost(skill string) int {
+	switch skill {
+	case "Coup de Poing":
+		return 0
+	case "Surcharge":
+		return 15
+	case "Crash":
+		return 25
+	case "Suicide":
+		return 80
+	default:
+		return 0
+	}
+}
+
+func rechargeRAM(c *character) {
+	const recharge = 10
+	c.ramAct += recharge
+	if c.ramAct > c.ramMax {
+		c.ramAct = c.ramMax
+	}
+	fmt.Printf("RAM rechargée : %d/%d\n", c.ramAct, c.ramMax)
 }
 
 func applyDamage(pvActuel *int, degats int) {

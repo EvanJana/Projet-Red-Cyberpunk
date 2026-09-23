@@ -29,6 +29,7 @@ func displayInfo(c character) {
 	fmt.Printf("Niveau      : %d\n", c.level)
 	fmt.Printf("Argent      : %d pièces\n", c.argent)
 	fmt.Println("PV          :", c.pvAct, "/", c.pvMax, barreVie(c.pvAct, c.pvMax))
+	fmt.Println("RAM         :", c.ramAct, "/", c.ramMax, barreVie(c.ramAct, c.ramMax))
 	fmt.Println("========================================")
 	fmt.Println("Inventaire :")
 	objets := make([]string, 0, len(c.inventaire))

@@ -3,7 +3,7 @@ package main
 type character struct {
 	name, class              string
 	skill                    []string
-	level, pvMax, pvAct, niv int
+	level, pvMax, pvAct, ramMax, ramAct, niv int
 	vientDeMourir            bool
 	argent                   int
 	inventaire               map[string]int
