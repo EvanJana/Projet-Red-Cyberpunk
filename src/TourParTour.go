@@ -176,7 +176,7 @@ func attackChoice(c *character, adversaire *Ennemi) bool {
 func skillDamage(skill string) int {
 	switch skill {
 	case "Coup de Poing":
-		return 5
+		return 10
 	case "Surcharge":
 		return 10
 	case "Crash":
