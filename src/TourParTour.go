@@ -60,14 +60,10 @@ func combat(c *character) {
 				break
 			}
 		}
-<<<<<<< HEAD
-=======
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monstrePattern(c, &adversaire, tourCombat)
 		rechargeRAM(c)
->>>>>>> 241c39769d402cd7d637ff8b7653451055c22a16
 		tourCombat++
 	}
 
@@ -128,14 +124,10 @@ func trainingFight(c *character) {
 				break
 			}
 		}
-<<<<<<< HEAD
-=======
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monstrePattern(c, &adversaire, tourCombat)
 		rechargeRAM(c)
->>>>>>> 241c39769d402cd7d637ff8b7653451055c22a16
 		tourCombat++
 	}
 
@@ -308,10 +300,6 @@ func monstrePattern(c *character, adversaire *Ennemi, tour int) {
 	monstreTurn(c, adversaire.Nom, degats, "Attaque basique")
 }
 
-func monsterPattern(c *character, adversaire *Ennemi, tour int) {
-	monstrePattern(c, adversaire, tour)
-}
-
 func monstreTurn(c *character, nomAdversaire string, degats int, message string) {
 	fmt.Println("")
 	fmt.Println("========================================")
@@ -320,8 +308,4 @@ func monstreTurn(c *character, nomAdversaire string, degats int, message string)
 	fmt.Println("========================================")
 	applyDamage(&c.pvAct, degats)
 	fmt.Printf("PV restants de %s : %d/%d\n", c.name, c.pvAct, c.pvMax)
-}
-
-func monsterTurn(c *character, nomAdversaire string, degats int, message string) {
-	monstreTurn(c, nomAdversaire, degats, message)
 }
