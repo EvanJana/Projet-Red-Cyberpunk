@@ -3,24 +3,47 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
-
-var argent int
 
 type Ennemi struct {
 	Nom      string
 	Style    string
+	Drop     string
 	PVMax    int
 	PVActuel int
 	Degats   int
 	Boss     bool
 }
 
-func monster(nombreRencontres int) Ennemi {
+func dropAleatoire() string {
+	choix := rand.Intn(100)
+	switch {
+	case choix < 30:
+		return "Acier"
+	case choix < 60:
+		return "Kevlar"
+	case choix < 80:
+		return "Cuir"
+	default:
+		return "Puce neuronale"
+	}
+}
+
+func robotEntrainement() Ennemi {
+	return Ennemi{
+		Nom:      "Robot d'entraînement",
+		Drop:     "dollars",
+		PVMax:    40,
+		PVActuel: 40,
+		Degats:   5,
+	}
+}
+
+func monstre(nombreRencontres int) Ennemi {
 	if nombreRencontres > 0 && nombreRencontres%10 == 0 {
 		return Ennemi{
 			Nom:      "Adam Smasher",
+			Drop:     dropAleatoire(),
 			PVMax:    200,
 			PVActuel: 200,
 			Degats:   10,
@@ -59,7 +82,13 @@ func monster(nombreRencontres int) Ennemi {
 	}
 
 	choixAleatoire := rand.Intn(len(ennemisNormaux))
-	return ennemisNormaux[choixAleatoire]
+	monstreAleatoire := ennemisNormaux[choixAleatoire]
+	monstreAleatoire.Drop = dropAleatoire()
+	return monstreAleatoire
+}
+
+func monster(nombreRencontres int) Ennemi {
+	return monstre(nombreRencontres)
 }
 func initAdamSmasher() {
 	nomMonstre := "Adam Smasher"
@@ -68,7 +97,6 @@ func initAdamSmasher() {
 	DmgMonstre := 10
 	_, _, _, _ = nomMonstre, pvMonstre, pvActuel, DmgMonstre
 }
-
 func initCyberpsycho() {
 	nomMonstre := "Cyberpsycho "
 	pvMonstre := 100
@@ -76,7 +104,6 @@ func initCyberpsycho() {
 	DmgMonstre := 5
 	_, _, _, _ = nomMonstre, pvMonstre, pvActuel, DmgMonstre
 }
-
 func cyberpsychoPattern(tour int, degats int) (int, string) {
 	if tour > 0 && tour%3 == 0 {
 		return degats * 2, "Le Cyberpsycho utilise son attaque spéciale !"
@@ -84,7 +111,6 @@ func cyberpsychoPattern(tour int, degats int) (int, string) {
 
 	return degats, "Le Cyberpsycho attaque !"
 }
-
 func punkQuartierPattern(style string, tour int, degats int) (int, string, bool) {
 	switch style {
 	case "brutal":
@@ -103,7 +129,6 @@ func punkQuartierPattern(style string, tour int, degats int) (int, string, bool)
 		return degats, "Le Punk de quartier attaque !", false
 	}
 }
-
 func adamSmasherPattern(tour int, degats int) (int, string) {
 	if tour > 0 && tour%5 == 0 {
 		return degats + 20, "Adam Smasher utilise son attaque spéciale Skullcrusher !"
@@ -124,26 +149,4 @@ func tour(nomAttaquant string, degats int, pvActuel *int, pvMax int, nomCible st
 	fmt.Println(messageattaque)
 	fmt.Println(messagePV)
 	return *pvActuel, messagePV
-}
-
-func main() {
-	rand.Seed(time.Now().UnixNano())
-
-	nombreRencontres := 0
-	adversaire := monster(nombreRencontres)
-	fmt.Println("Adversaire :", adversaire.Nom)
-
-	tourActuel := 1
-	var degats int
-	var messageAttaque string
-	if adversaire.Boss {
-		degats, messageAttaque = adamSmasherPattern(tourActuel, adversaire.Degats)
-	} else if adversaire.Style != "" {
-		degats, messageAttaque, _ = punkQuartierPattern(adversaire.Style, tourActuel, adversaire.Degats)
-	} else {
-		degats, messageAttaque = cyberpsychoPattern(tourActuel, adversaire.Degats)
-	}
-	fmt.Println(messageAttaque)
-
-	tour(adversaire.Nom, degats, &adversaire.PVActuel, adversaire.PVMax, "Personnage")
 }
