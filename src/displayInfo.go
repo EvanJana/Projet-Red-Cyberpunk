@@ -27,6 +27,7 @@ func displayInfo(c character) {
 	fmt.Printf("Nom         : %s\n", c.name)
 	fmt.Printf("Classe      : %s\n", c.class)
 	fmt.Printf("Niveau      : %d\n", c.level)
+	fmt.Printf("Expérience  : %d/%d XP\n", c.exp, c.level*100)
 	fmt.Printf("Argent      : %d pièces\n", c.argent)
 	fmt.Println("PV          :", c.pvAct, "/", c.pvMax, barreVie(c.pvAct, c.pvMax))
 	fmt.Println("========================================")

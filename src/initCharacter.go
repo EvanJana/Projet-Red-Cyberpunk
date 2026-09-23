@@ -54,6 +54,7 @@ func initCharacter(name, class string) character {
 		class:                class,
 		skill:                []string{"Coup de Poing"},
 		level:                1,
+		exp:                  0,
 		pvMax:                pvMax,
 		pvAct:                pvMax / 2,
 		argent:               100,

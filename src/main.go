@@ -1,16 +1,17 @@
 package main
 
 type character struct {
-	name, class              string
-	skill                    []string
-	level, pvMax, pvAct, niv int
-	vientDeMourir            bool
-	argent                   int
-	inventaire               map[string]int
-	InventoryCapacity        int
-	InventoryUpgradesCnt     int
-	firstMerchantVisit       bool
-	equipment                equipement
+	name, class                   string
+	skill                         []string
+	level, exp, pvMax, pvAct, niv int
+	combatsAleatoires             int
+	vientDeMourir                 bool
+	argent                        int
+	inventaire                    map[string]int
+	InventoryCapacity             int
+	InventoryUpgradesCnt          int
+	firstMerchantVisit            bool
+	equipment                     equipement
 }
 type equipement struct {
 	torse  string

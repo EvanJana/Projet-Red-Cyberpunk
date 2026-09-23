@@ -6,13 +6,14 @@ import (
 )
 
 type Ennemi struct {
-	Nom      string
-	Style    string
-	Drop     string
-	PVMax    int
-	PVActuel int
-	Degats   int
-	Boss     bool
+	Nom        string
+	Style      string
+	Drop       string
+	PVMax      int
+	PVActuel   int
+	Degats     int
+	Experience int
+	Boss       bool
 }
 
 func dropAleatoire() string {
@@ -31,53 +32,59 @@ func dropAleatoire() string {
 
 func robotEntrainement() Ennemi {
 	return Ennemi{
-		Nom:      "Robot d'entraînement",
-		Drop:     "dollars",
-		PVMax:    40,
-		PVActuel: 40,
-		Degats:   5,
+		Nom:        "Robot d'entraînement",
+		Drop:       "dollars",
+		PVMax:      40,
+		PVActuel:   40,
+		Degats:     5,
+		Experience: 0,
 	}
 }
 
 func monstre(nombreRencontres int) Ennemi {
-	if nombreRencontres > 0 && nombreRencontres%10 == 0 {
+	if nombreRencontres > 0 && nombreRencontres%5 == 0 {
 		return Ennemi{
-			Nom:      "Adam Smasher",
-			Drop:     dropAleatoire(),
-			PVMax:    200,
-			PVActuel: 200,
-			Degats:   10,
-			Boss:     true,
+			Nom:        "Adam Smasher",
+			Drop:       dropAleatoire(),
+			PVMax:      200,
+			PVActuel:   200,
+			Degats:     10,
+			Experience: 200,
+			Boss:       true,
 		}
 	}
 
 	ennemisNormaux := []Ennemi{
 		{
-			Nom:      "Cyberpsycho",
-			PVMax:    100,
-			PVActuel: 100,
-			Degats:   5,
+			Nom:        "Cyberpsycho",
+			PVMax:      100,
+			PVActuel:   100,
+			Degats:     5,
+			Experience: 45,
 		},
 		{
-			Nom:      "Punk brutal de quartier",
-			Style:    "brutal",
-			PVMax:    120,
-			PVActuel: 120,
-			Degats:   8,
+			Nom:        "Punk brutal de quartier",
+			Style:      "brutal",
+			PVMax:      120,
+			PVActuel:   120,
+			Degats:     8,
+			Experience: 40,
 		},
 		{
-			Nom:      "Punk tireur de quartier",
-			Style:    "tireur",
-			PVMax:    55,
-			PVActuel: 55,
-			Degats:   12,
+			Nom:        "Punk tireur de quartier",
+			Style:      "tireur",
+			PVMax:      55,
+			PVActuel:   55,
+			Degats:     12,
+			Experience: 40,
 		},
 		{
-			Nom:      "Punk junkie de quartier",
-			Style:    "junkie",
-			PVMax:    70,
-			PVActuel: 70,
-			Degats:   6,
+			Nom:        "Punk junkie de quartier",
+			Style:      "junkie",
+			PVMax:      70,
+			PVActuel:   70,
+			Degats:     6,
+			Experience: 40,
 		},
 	}
 

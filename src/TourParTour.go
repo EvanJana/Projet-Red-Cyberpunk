@@ -23,7 +23,8 @@ func affichageCombatDebut(c *character, adversaire Ennemi) {
 
 func combat(c *character) {
 	resetCombatHP(c)
-	adversaire := monstre(0)
+	c.combatsAleatoires++
+	adversaire := monstre(c.combatsAleatoires)
 	tourCombat := 1
 
 	affichageCombatDebut(c, adversaire)
@@ -46,6 +47,7 @@ func combat(c *character) {
 
 	if adversaire.PVActuel == 0 {
 		fmt.Println("Victoire !", adversaire.Nom, "est vaincu.")
+		gainExperience(c, adversaire.Experience)
 		c.argent += 20
 		fmt.Println("Vous gagnez 20 dollars pour cette victoire.")
 		if adversaire.Drop != "" {
@@ -162,7 +164,7 @@ func attackChoice(c *character, adversaire *Ennemi) bool {
 	}
 
 	skill := c.skill[choix-1]
-	degats := skillDamage(skill)
+	degats := skillDamage(skill) + (c.level-1)*5
 	fmt.Println("")
 	fmt.Println("========================================")
 	fmt.Printf("%s utilise %s\n", c.name, skill)
@@ -178,14 +180,32 @@ func skillDamage(skill string) int {
 	case "Coup de Poing":
 		return 10
 	case "Surcharge":
-		return 10
-	case "Crash":
 		return 15
-	case "Suicide":
+	case "Crash":
 		return 20
+	case "Suicide":
+		return 250
 	default:
 		return 5
 	}
+}
+
+func gainExperience(c *character, experience int) {
+	ancienNiveau := c.level
+	c.exp += experience
+	c.level = c.exp/100 + 1
+
+	if c.level == ancienNiveau {
+		fmt.Printf("Vous gagnez %d XP. Total : %d/%d XP.\n", experience, c.exp, c.level*100)
+		return
+	}
+
+	nouveauxNiveaux := c.level - ancienNiveau
+	c.pvMax += nouveauxNiveaux * 10
+	c.pvAct += nouveauxNiveaux * 10
+	fmt.Printf("Vous gagnez %d XP. Total : %d/%d XP.\n", experience, c.exp, c.level*100)
+	fmt.Printf("Niveau supérieur ! Vous êtes maintenant niveau %d.\n", c.level)
+	fmt.Printf("Vous gagnez %d PV max et vos dégâts augmentent de %d.\n", nouveauxNiveaux*10, nouveauxNiveaux*5)
 }
 
 func applyDamage(pvActuel *int, degats int) {
