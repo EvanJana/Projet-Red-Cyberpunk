@@ -13,6 +13,7 @@ type Ennemi struct {
 	PVActuel int
 	Degats   int
 	Boss     bool
+	initiative int
 }
 
 func dropAleatoire() string {
@@ -36,6 +37,7 @@ func robotEntrainement() Ennemi {
 		PVMax:    40,
 		PVActuel: 40,
 		Degats:   5,
+		initiative: 1,
 	}
 }
 
@@ -48,6 +50,7 @@ func monstre(nombreRencontres int) Ennemi {
 			PVActuel: 200,
 			Degats:   10,
 			Boss:     true,
+			initiative: 10,
 		}
 	}
 
@@ -57,6 +60,7 @@ func monstre(nombreRencontres int) Ennemi {
 			PVMax:    100,
 			PVActuel: 100,
 			Degats:   5,
+			initiative: 1,
 		},
 		{
 			Nom:      "Punk brutal de quartier",
@@ -64,6 +68,7 @@ func monstre(nombreRencontres int) Ennemi {
 			PVMax:    120,
 			PVActuel: 120,
 			Degats:   8,
+			initiative: 0,
 		},
 		{
 			Nom:      "Punk tireur de quartier",
@@ -71,6 +76,7 @@ func monstre(nombreRencontres int) Ennemi {
 			PVMax:    55,
 			PVActuel: 55,
 			Degats:   12,
+			initiative: 0,
 		},
 		{
 			Nom:      "Punk junkie de quartier",
@@ -78,6 +84,7 @@ func monstre(nombreRencontres int) Ennemi {
 			PVMax:    70,
 			PVActuel: 70,
 			Degats:   6,
+			initiative: 5,
 		},
 	}
 

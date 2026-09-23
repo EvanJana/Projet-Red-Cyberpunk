@@ -17,6 +17,7 @@ func characterCreation() character {
 		}
 		fmt.Println("Le nom doit contenir uniquement des lettres.")
 	}
+
 	var class string
 	for {
 		fmt.Println("Choisissez votre classe :")
@@ -39,7 +40,16 @@ func characterCreation() character {
 		break
 	}
 
-	return initCharacter(name, class)
+	c := initCharacter(name, class)
+	switch class {
+	case "Netrunner":
+		c.initiative = 2
+	case "Assassin":
+		c.initiative = 2
+	case "Berserk":
+		c.initiative = 2
+	}
+	return c
 }
 
 func initCharacter(name, class string) character {
@@ -48,6 +58,16 @@ func initCharacter(name, class string) character {
 		"Assassin":  75,
 		"Berserk":   125,
 	}[class]
+
+	initiative := 1
+	switch class {
+	case "Netrunner":
+		initiative = 2
+	case "Assassin":
+		initiative = 2
+	case "Berserk":
+		initiative = 2
+	}
 
 	return character{
 		name:                 name,
@@ -61,6 +81,7 @@ func initCharacter(name, class string) character {
 		InventoryCapacity:    10,
 		InventoryUpgradesCnt: 0,
 		firstMerchantVisit:   false,
+		initiative:           initiative,
 	}
 }
 

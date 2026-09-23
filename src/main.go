@@ -11,6 +11,7 @@ type character struct {
 	InventoryUpgradesCnt     int
 	firstMerchantVisit       bool
 	equipment                equipement
+	initiative				 int
 }
 type equipement struct {
 	torse  string
