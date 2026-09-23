@@ -34,7 +34,7 @@ func menu(c *character) bool {
 		fmt.Scan(&choixCombat)
 		switch choixCombat {
 		case "1":
-			trainingFight(c)
+			combat(c)
 		case "2":
 			combat(c)
 		default:

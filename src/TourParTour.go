@@ -27,22 +27,43 @@ func combat(c *character) {
 	c.combatsAleatoires++
 	adversaire := monstre(c.combatsAleatoires)
 	tourCombat := 1
+	joueurCommence := c.initiative >= adversaire.initiative
 
 	affichageCombatDebut(c, adversaire)
+	if joueurCommence {
+		fmt.Printf("%s commence le combat avec une initiative de %d contre %d.\n", c.name, c.initiative, adversaire.initiative)
+	} else {
+		fmt.Printf("%s commence le combat avec une initiative de %d contre %d.\n", adversaire.Nom, adversaire.initiative, c.initiative)
+	}
 
 	for c.pvAct > 0 && adversaire.PVActuel > 0 {
 		fmt.Println()
 		fmt.Println("================================")
 		fmt.Println("           TOUR", tourCombat)
 		fmt.Println("================================")
-		if characterTurn(c, &adversaire) {
-			fmt.Println("Vous avez fui le combat.")
-			break
+
+		if joueurCommence {
+			if characterTurn(c, &adversaire) {
+				fmt.Println("Vous avez fui le combat.")
+				break
+			}
+			if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+				break
+			}
+			monstrePattern(c, &adversaire, tourCombat)
+		} else {
+			monstrePattern(c, &adversaire, tourCombat)
+			if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+				break
+			}
+			if characterTurn(c, &adversaire) {
+				fmt.Println("Vous avez fui le combat.")
+				break
+			}
 		}
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monstrePattern(c, &adversaire, tourCombat)
 		rechargeRAM(c)
 		tourCombat++
 	}
@@ -72,22 +93,42 @@ func trainingFight(c *character) {
 	resetCombatHP(c)
 	adversaire := robotEntrainement()
 	tourCombat := 1
+	joueurCommence := c.initiative >= adversaire.initiative
 
 	affichageCombatDebut(c, adversaire)
+	if joueurCommence {
+		fmt.Printf("%s commence le combat avec une initiative de %d contre %d.\n", c.name, c.initiative, adversaire.initiative)
+	} else {
+		fmt.Printf("%s commence le combat avec une initiative de %d contre %d.\n", adversaire.Nom, adversaire.initiative, c.initiative)
+	}
 
 	for c.pvAct > 0 && adversaire.PVActuel > 0 {
 		fmt.Println()
 		fmt.Println("========================================")
 		fmt.Printf("                 TOUR %d\n", tourCombat)
 		fmt.Println("========================================")
-		if characterTurn(c, &adversaire) {
-			fmt.Println("Vous avez fui le combat.")
-			break
+		if joueurCommence {
+			if characterTurn(c, &adversaire) {
+				fmt.Println("Vous avez fui le combat.")
+				break
+			}
+			if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+				break
+			}
+			monstrePattern(c, &adversaire, tourCombat)
+		} else {
+			monstrePattern(c, &adversaire, tourCombat)
+			if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
+				break
+			}
+			if characterTurn(c, &adversaire) {
+				fmt.Println("Vous avez fui le combat.")
+				break
+			}
 		}
 		if c.pvAct <= 0 || adversaire.PVActuel <= 0 {
 			break
 		}
-		monstrePattern(c, &adversaire, tourCombat)
 		rechargeRAM(c)
 		tourCombat++
 	}
@@ -290,10 +331,6 @@ func monstrePattern(c *character, adversaire *Ennemi, tour int) {
 	monstreTurn(c, adversaire.Nom, degats, "Attaque basique")
 }
 
-func monsterPattern(c *character, adversaire *Ennemi, tour int) {
-	monstrePattern(c, adversaire, tour)
-}
-
 func monstreTurn(c *character, nomAdversaire string, degats int, message string) {
 	fmt.Println("")
 	fmt.Println("========================================")
@@ -302,8 +339,4 @@ func monstreTurn(c *character, nomAdversaire string, degats int, message string)
 	fmt.Println("========================================")
 	applyDamage(&c.pvAct, degats)
 	fmt.Printf("PV restants de %s : %d/%d\n", c.name, c.pvAct, c.pvMax)
-}
-
-func monsterTurn(c *character, nomAdversaire string, degats int, message string) {
-	monstreTurn(c, nomAdversaire, degats, message)
 }
