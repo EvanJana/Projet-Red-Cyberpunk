@@ -20,6 +20,7 @@ func isDead(c *character) {
 	switch choixAfterEnd {
 	case "1", "Ressusciter", "ressusciter":
 		c.pvAct = c.pvMax / 2
+		c.vientDeMourir = true
 	case "2", "Quitter", "quitter":
 		fmt.Println("Au revoir !")
 		os.Exit(0)

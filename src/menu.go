@@ -24,17 +24,23 @@ func menu(c *character) bool {
 	case "3":
 		ferailleur(c)
 	case "4":
-		fmt.Println("1. entrainement")
-		fmt.Println("2. combat")
+		fmt.Println("")
+		fmt.Println("========================================")
+		fmt.Println("            MODE DE COMBAT")
+		fmt.Println("========================================")
+		fmt.Println("1. Entraînement")
+		fmt.Println("2. Combat aléatoire")
+		fmt.Println("========================================")
 		fmt.Scan(&choixCombat)
 		switch choixCombat {
 		case "1":
 			trainingFight(c)
-			resetCombatHP(c)
 		case "2":
 			combat(c)
+		default:
+			fmt.Println("Choix invalide.")
 		}
-		
+
 	case "5":
 		fmt.Println("Au revoir !")
 		return false
