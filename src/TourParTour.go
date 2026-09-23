@@ -9,6 +9,7 @@ func resetCombatHP(c *character) {
 	}
 
 	c.pvAct = c.pvMax
+	c.ramAct = c.ramMax
 }
 
 func affichageCombatDebut(c *character, adversaire Ennemi) {
@@ -16,7 +17,7 @@ func affichageCombatDebut(c *character, adversaire Ennemi) {
 	fmt.Println("========================================")
 	fmt.Println("             COMBAT EN COURS            ")
 	fmt.Println("========================================")
-	fmt.Printf("Joueur : %s  |  PV : %d/%d\n", c.name, c.pvAct, c.pvMax)
+	fmt.Printf("Joueur : %s  |  PV : %d/%d  |  RAM : %d/%d\n", c.name, c.pvAct, c.pvMax, c.ramAct, c.ramMax)
 	fmt.Printf("Adversaire : %s  |  PV : %d/%d\n", adversaire.Nom, adversaire.PVActuel, adversaire.PVMax)
 	fmt.Println("========================================")
 }
@@ -42,6 +43,7 @@ func combat(c *character) {
 			break
 		}
 		monstrePattern(c, &adversaire, tourCombat)
+		rechargeRAM(c)
 		tourCombat++
 	}
 
@@ -86,6 +88,7 @@ func trainingFight(c *character) {
 			break
 		}
 		monstrePattern(c, &adversaire, tourCombat)
+		rechargeRAM(c)
 		tourCombat++
 	}
 
@@ -164,11 +167,18 @@ func attackChoice(c *character, adversaire *Ennemi) bool {
 	}
 
 	skill := c.skill[choix-1]
+	coutRAM := skillRAMCost(skill)
+	if c.ramAct < coutRAM {
+		fmt.Printf("RAM insuffisante : %d/%d nécessaire.\n", c.ramAct, coutRAM)
+		return false
+	}
 	degats := skillDamage(skill) + (c.level-1)*5
+	c.ramAct -= coutRAM
 	fmt.Println("")
 	fmt.Println("========================================")
 	fmt.Printf("%s utilise %s\n", c.name, skill)
 	fmt.Printf("Dégâts infligés : %d\n", degats)
+	fmt.Printf("RAM utilisée : %d | RAM restante : %d/%d\n", coutRAM, c.ramAct, c.ramMax)
 	fmt.Println("========================================")
 	applyDamage(&adversaire.PVActuel, degats)
 	fmt.Printf("PV restants de %s : %d/%d\n", adversaire.Nom, adversaire.PVActuel, adversaire.PVMax)
@@ -191,21 +201,56 @@ func skillDamage(skill string) int {
 }
 
 func gainExperience(c *character, experience int) {
-	ancienNiveau := c.level
 	c.exp += experience
-	c.level = c.exp/100 + 1
-
-	if c.level == ancienNiveau {
-		fmt.Printf("Vous gagnez %d XP. Total : %d/%d XP.\n", experience, c.exp, c.level*100)
-		return
+	nouveauxNiveaux := 0
+	for c.exp >= experienceRequise(c.level+1) {
+		c.level++
+		nouveauxNiveaux++
 	}
 
-	nouveauxNiveaux := c.level - ancienNiveau
-	c.pvMax += nouveauxNiveaux * 10
-	c.pvAct += nouveauxNiveaux * 10
-	fmt.Printf("Vous gagnez %d XP. Total : %d/%d XP.\n", experience, c.exp, c.level*100)
-	fmt.Printf("Niveau supérieur ! Vous êtes maintenant niveau %d.\n", c.level)
-	fmt.Printf("Vous gagnez %d PV max et vos dégâts augmentent de %d.\n", nouveauxNiveaux*10, nouveauxNiveaux*5)
+	if nouveauxNiveaux > 0 {
+		const pvParNiveau = 10
+		const ramParNiveau = 10
+		const argentParNiveau = 50
+
+		c.pvMax += nouveauxNiveaux * pvParNiveau
+		c.pvAct += nouveauxNiveaux * pvParNiveau
+		c.ramMax += nouveauxNiveaux * ramParNiveau
+		c.ramAct += nouveauxNiveaux * ramParNiveau
+		c.argent += nouveauxNiveaux * argentParNiveau
+		fmt.Printf("Niveau supérieur ! Vous êtes maintenant niveau %d.\n", c.level)
+		fmt.Printf("Bonus : +%d PV max, +%d RAM max et +%d pièces.\n", nouveauxNiveaux*pvParNiveau, nouveauxNiveaux*ramParNiveau, nouveauxNiveaux*argentParNiveau)
+	}
+
+	fmt.Printf("Vous gagnez %d XP. Total : %d/%d XP.\n", experience, c.exp, experienceRequise(c.level+1))
+}
+
+func experienceRequise(niveau int) int {
+	return niveau * (niveau - 1) / 2 * 100
+}
+
+func skillRAMCost(skill string) int {
+	switch skill {
+	case "Coup de Poing":
+		return 0
+	case "Surcharge":
+		return 15
+	case "Crash":
+		return 25
+	case "Suicide":
+		return 80
+	default:
+		return 0
+	}
+}
+
+func rechargeRAM(c *character) {
+	const recharge = 10
+	c.ramAct += recharge
+	if c.ramAct > c.ramMax {
+		c.ramAct = c.ramMax
+	}
+	fmt.Printf("RAM rechargée : %d/%d\n", c.ramAct, c.ramMax)
 }
 
 func applyDamage(pvActuel *int, degats int) {
