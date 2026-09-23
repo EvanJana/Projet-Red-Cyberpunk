@@ -9,6 +9,7 @@ type character struct {
 	inventaire               map[string]int
 	InventoryCapacity        int
 	InventoryUpgradesCnt     int
+	firstMerchantVisit       bool
 	equipment                equipement
 }
 type equipement struct {

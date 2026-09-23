@@ -60,6 +60,7 @@ func initCharacter(name, class string) character {
 		inventaire:           make(map[string]int),
 		InventoryCapacity:    10,
 		InventoryUpgradesCnt: 0,
+		firstMerchantVisit:   false,
 	}
 }
 
