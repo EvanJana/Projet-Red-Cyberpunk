@@ -9,6 +9,7 @@ func menu(c *character) bool {
 	fmt.Println("3. Cyberforgeron")
 	fmt.Println("4. Combattre")
 	fmt.Println("5. Quitter")
+	fmt.Println("6. Qui suisje ?")
 	fmt.Println("==================================")
 
 	var choixMenu string
@@ -40,10 +41,14 @@ func menu(c *character) bool {
 		default:
 			fmt.Println("Choix invalide.")
 		}
-
 	case "5":
 		fmt.Println("Au revoir !")
 		return false
+	case "6":
+		fmt.Println("ABBA")
+		fmt.Println("Steven Spielberg")
+		fmt.Println("1.retour")
+		fmt.Scan(&choixMenu)
 	default:
 		fmt.Println("Choix invalide.")
 	}
